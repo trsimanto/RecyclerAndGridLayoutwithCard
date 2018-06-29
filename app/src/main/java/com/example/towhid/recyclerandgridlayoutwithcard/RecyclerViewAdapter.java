@@ -1,7 +1,9 @@
 package com.example.towhid.recyclerandgridlayoutwithcard;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,9 +36,25 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
         holder.tv_Book_titel.setText(mData.get(position).getTitle());
         holder.img_book_thumbnail.setImageResource(mData.get(position).getThumbnail());
+
+        //set click listener
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent= new Intent(mContext,BookActivity.class);
+                //passing data to the book activity
+                intent.putExtra("Title",mData.get(position).getTitle());
+                intent.putExtra("Discription",mData.get(position).getDescription());
+                intent.putExtra("Thumbnail",mData.get(position).getThumbnail());
+                intent.putExtra("catagory",mData.get(position).getCategory());
+                //start the activity
+                mContext.startActivity(intent);
+
+            }
+        });
 
 
     }
@@ -50,12 +68,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         TextView tv_Book_titel;
         ImageView img_book_thumbnail;
+        CardView cardView;
         public MyViewHolder(View itemView) {
             super(itemView);
 
             tv_Book_titel=(TextView)itemView.findViewById(R.id.book_title_id);
             img_book_thumbnail=(ImageView)itemView.findViewById(R.id.book_img_id);
-
+            cardView=(CardView)itemView.findViewById(R.id.cardview_id);
         }
     }
 }
